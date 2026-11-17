@@ -6,6 +6,8 @@ Encore adds an iPhone-style Now Playing widget to your **lock screen and screen 
 
 **[⬇ Download the latest version](https://github.com/Zhuss-08/encore/releases/latest)** (Encore.dmg)
 
+**Try it free for 7 days**, then [buy it once for £2](https://zhuss-08.github.io/encore/) to keep it, with all future updates included. One licence works on up to 2 Macs.
+
 Encore was called **Lyrics Screensaver** before version 1.9. If you had that, updating keeps all your settings and renames it for you.
 
 ---
@@ -63,7 +65,7 @@ Turning Low Power Mode on from the notch asks for your Mac password the first ti
 
 ## Privacy
 
-Encore has no accounts, ads or tracking. It only goes online for:
+Encore has no ads or tracking, and you don't need an account to use it. It only goes online for:
 
 - **Lyrics** from [LRCLIB](https://lrclib.net), looked up by song title and artist.
 - **Album art** from Apple's iTunes search, only when the music app doesn't provide it.
@@ -71,6 +73,7 @@ Encore has no accounts, ads or tracking. It only goes online for:
 - **Music videos** from YouTube, if you turn that on.
 - **Video timings**: how far each music video is from its song, shared anonymously so videos line up straight away for everyone.
 - **Update checks** on this GitHub page.
+- **Licence checks** with [Polar](https://polar.sh), which sells Encore, when you activate a key and every few days after. Encore never sees your card details.
 
 ## Good to know
 
