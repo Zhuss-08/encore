@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encore for Mac</title>
+<meta name="description" content="Encore puts live lyrics, big album art and your music video on your Mac's lock screen, and turns the notch into a Dynamic Island.">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta property="og:title" content="Encore for Mac">
+<meta property="og:description" content="Live lyrics on your lock screen, and a Dynamic Island in your notch.">
+<meta property="og:image" content="https://zhuss-08.github.io/encore/icon.png">
+<style>
+  :root {
+    --bg: #07070d;
+    --card: rgba(255,255,255,0.045);
+    --line: rgba(255,255,255,0.09);
+    --text: #f5f5f7;
+    --muted: #a1a1ab;
+    --navy: #1e2a78; --violet: #8b5cf6; --pink: #f43f7a; --orange: #fb923c; --teal: #22b8cf;
+    --sunset: linear-gradient(100deg, #fb923c, #f43f7a 40%, #8b5cf6 75%, #22b8cf);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  nav { position: sticky; top: 0; z-index: 10; backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+        background: rgba(7,7,13,0.72); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; gap: 12px; height: 56px; }
+  nav img { width: 28px; height: 28px; }
+  nav b { font-size: 17px; }
+  nav .links { margin-left: auto; display: flex; gap: 22px; font-size: 14px; color: var(--muted); }
+  nav .links a { text-decoration: none; }
+  nav .links a:hover { color: var(--text); }
+
+  .hero { position: relative; text-align: center; padding: 88px 0 72px; }
+  .glow { position: absolute; inset: -120px 0 auto 0; height: 620px; z-index: -1; pointer-events: none;
+          background:
+            radial-gradient(40% 50% at 30% 40%, rgba(244,63,122,0.35), transparent 70%),
+            radial-gradient(40% 50% at 70% 35%, rgba(139,92,246,0.35), transparent 70%),
+            radial-gradient(35% 45% at 55% 70%, rgba(34,184,207,0.25), transparent 70%),
+            radial-gradient(30% 40% at 45% 20%, rgba(251,146,60,0.25), transparent 70%);
+          filter: blur(20px); }
+  .hero img.icon { width: 148px; height: 148px; filter: drop-shadow(0 18px 40px rgba(139,92,246,0.45)); }
+  h1 { font-size: clamp(44px, 8vw, 84px); line-height: 1.02; letter-spacing: -0.035em; margin: 18px 0 14px; font-weight: 700; }
+  h1 span, .grad { background: var(--sunset); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { font-size: clamp(18px, 2.4vw, 22px); color: var(--muted); max-width: 640px; margin: 0 auto; }
+  .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 17px;
+         text-decoration: none; border: 1px solid var(--line); transition: transform .15s ease, filter .15s ease; cursor: pointer; }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .btn.primary { background: var(--sunset); border: 0; color: #fff; box-shadow: 0 10px 30px rgba(244,63,122,0.3); }
+  .btn.ghost { background: rgba(255,255,255,0.06); }
+  .btn.disabled { opacity: .55; pointer-events: none; }
+  .small { font-size: 13px; color: var(--muted); margin-top: 14px; }
+
+  section { padding: 64px 0; }
+  h2 { font-size: clamp(30px, 4.5vw, 44px); letter-spacing: -0.025em; line-height: 1.1; margin: 0 0 12px; text-align: center; }
+  .sub { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 40px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px; }
+  .card h3 { margin: 14px 0 6px; font-size: 19px; letter-spacing: -0.01em; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; }
+  .badge { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; }
+  .badge svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .price { max-width: 560px; margin: 0 auto; text-align: center; padding: 40px 30px; border-radius: 28px; position: relative; overflow: hidden;
+           background: linear-gradient(160deg, rgba(139,92,246,0.18), rgba(244,63,122,0.12) 50%, rgba(34,184,207,0.12)); border: 1px solid var(--line); }
+  .price .amount { font-size: 72px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; margin: 6px 0; }
+  .price ul { list-style: none; padding: 0; margin: 22px auto 28px; text-align: left; display: inline-block; color: var(--muted); }
+  .price li { padding: 4px 0 4px 30px; position: relative; }
+  .price li::before { content: ""; position: absolute; left: 0; top: 10px; width: 16px; height: 9px; border-left: 2.5px solid var(--teal); border-bottom: 2.5px solid var(--teal); transform: rotate(-45deg); }
+
+  .steps { counter-reset: s; display: grid; gap: 14px; max-width: 720px; margin: 0 auto; }
+  .step { display: flex; gap: 16px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+  .step::before { counter-increment: s; content: counter(s); flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--sunset);
+                  display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+  .step p { margin: 3px 0 0; color: var(--muted); font-size: 15px; }
+
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px; max-width: 720px; margin: 0 auto 10px; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { color: var(--muted); margin: 10px 0 0; font-size: 15px; }
+
+  footer { border-top: 1px solid var(--line); padding: 36px 0 48px; color: var(--muted); font-size: 13px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: center; }
+  footer .wrap a { text-decoration: none; }
+  footer .wrap a:hover { color: var(--text); }
+  footer .copy { margin-left: auto; }
+  @media (max-width: 640px) { nav .links { display: none; } footer .copy { margin-left: 0; width: 100%; } }
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <img src="favicon.png" alt=""><b>Encore</b>
+  <div class="links"><a href="#features">Features</a><a href="#price">Price</a><a href="#install">Install</a><a href="#faq">Questions</a></div>
+</div></nav>
+
+<header class="hero"><div class="glow"></div><div class="wrap">
+  <img class="icon" src="icon.png" alt="Encore app icon">
+  <h1>Your music,<br><span>on stage.</span></h1>
+  <p class="lead">Encore puts live lyrics, big album art and the song's music video on your Mac's lock screen, and turns the notch into a Dynamic Island.</p>
+  <div class="ctas">
+    <a class="btn primary" href="https://github.com/Zhuss-08/encore/releases/latest/download/Encore.dmg">Download free trial</a>
+    <a class="btn ghost buy" href="#price">Buy for £2</a>
+  </div>
+  <p class="small">For macOS 14 or later · Works with Spotify and Apple Music · 7 days free</p>
+</div></header>
+
+<section id="features"><div class="wrap">
+  <h2>Everything your music deserves</h2>
+  <p class="sub">On the lock screen while you're away, and in the notch while you work.</p>
+  <div class="grid">
+    <div class="card"><div class="badge" style="background:linear-gradient(135deg,#f43f7a,#8b5cf6)"><svg viewBox="0 0 24 24"><path d="M4 7h10M4 12h16M4 17h8"/></svg></div>
+      <h3>Live lyrics</h3><p>Every line lights up as it's sung. Tap a line to jump straight to it.</p></div>
+    <div class="card"><div class="badge" style="background:linear-gradient(135deg,#fb923c,#f43f7a)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <h3>Lock screen &amp; screen saver</h3><p>Big album art over a soft blur of its colours, with Apple's own clock kept exactly in place.</p></div>
+    <div class="card"><div class="badge" style="background:linear-gradient(135deg,#ef4444,#f43f7a)"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></div>
+      <h3>Music videos</h3><p>The official video plays behind your lyrics, perfectly in time with the song.</p></div>
+    <div class="card"><div class="badge" style="background:linear-gradient(135deg,#1e2a78,#8b5cf6)"><svg viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="6" rx="3"/></svg></div>
+      <h3>Dynamic Island</h3><p>Your notch shows what's playing, with controls, the current lyric and your calendar.</p></div>
+    <div class="card"><div class="badge" style="background:linear-gradient(135deg,#22c55e,#22b8cf)"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/></svg></div>
+      <h3>Calls in the notch</h3><p>FaceTime and iPhone calls appear in the island, with Accept and Decline right there.</p></div>
+    <div class="card"><div class="badge" style="background:linear-gradient(135deg,#22b8cf,#3b82f6)"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 1117.5 18z"/></svg></div>
+      <h3>Weather, battery &amp; more</h3><p>A live sky for the weather where you are, Low Power Mode in a tap, a timer and a file shelf.</p></div>
+  </div>
+</div></section>
+
+<section id="price"><div class="wrap">
+  <div class="price">
+    <div class="grad" style="font-weight:600">Encore for Mac</div>
+    <div class="amount">£2</div>
+    <div style="color:var(--muted)">One payment. Yours to keep.</div>
+    <ul>
+      <li>7-day free trial, no card needed</li>
+      <li>Every future update included</li>
+      <li>Secure checkout by Polar</li>
+      <li>Your licence key arrives by email</li>
+    </ul><br>
+    <a class="btn primary buy" id="buy" href="#">Buy Encore for £2</a>
+    <p class="small" id="buy-note">Payments are handled securely by Polar, which takes care of card details and VAT. Encore never sees your card.</p>
+  </div>
+</div></section>
+
+<section id="install"><div class="wrap">
+  <h2>Up and running in a minute</h2>
+  <p class="sub">Encore isn't from the App Store, so the first time macOS asks you to confirm it.</p>
+  <div class="steps">
+    <div class="step"><div><b>Download Encore.dmg and open it</b><p>Drag Encore into your Applications folder, then open it.</p></div></div>
+    <div class="step"><div><b>Allow it the first time</b><p>If macOS says it can't verify the app, click Done, then go to System Settings → Privacy &amp; Security, scroll down and click Open Anyway.</p></div></div>
+    <div class="step"><div><b>Play a song and lock your Mac</b><p>Encore lives in the menu bar. Play something in Spotify or Music, lock your Mac, and enjoy.</p></div></div>
+    <div class="step"><div><b>Loving it? Buy it for £2</b><p>Choose Buy Encore from the menu bar, then paste the licence key from your email. Updates install themselves.</p></div></div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <h2>Questions</h2>
+  <p class="sub">&nbsp;</p>
+  <details><summary>I already had Encore (or Lyrics Screensaver). Do I need to pay?</summary>
+    <p>No. If you had it before it became paid, it stays free on that Mac, with updates. Thank you for being an early user!</p></details>
+  <details><summary>What happens when the trial ends?</summary>
+    <p>Encore asks you to buy it and pauses until you do. Your settings are kept, so everything is just as you left it once you enter your key.</p></details>
+  <details><summary>Can I use my key on more than one Mac?</summary>
+    <p>Yes, on your own Macs. If you replace a Mac, remove the licence in Encore's Settings → Licence to free up its place.</p></details>
+  <details><summary>Can I get a refund?</summary>
+    <p>Yes. If Encore doesn't work for you, ask within 14 days of buying for a full refund, using the link in your Polar receipt email.</p></details>
+  <details><summary>Is it safe? What does it collect?</summary>
+    <p>There are no accounts, ads or tracking. Encore only goes online for lyrics, album art, the weather (using your location rounded to about 1 km), music videos from YouTube if you turn them on, anonymous video timings, updates, and checking your licence key. See the <a href="privacy.html">privacy policy</a>.</p></details>
+  <details><summary>Which Macs does it work on?</summary>
+    <p>Any Mac with macOS 14 or later, Apple silicon or Intel. The Dynamic Island looks best on a MacBook with a notch.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <a href="privacy.html">Privacy</a>
+  <a href="terms.html">Terms &amp; refunds</a>
+  <a href="https://github.com/Zhuss-08/encore/releases">Release notes</a>
+  <span class="copy">© 2026 Encore. All rights reserved. Not affiliated with Apple, Spotify or YouTube.</span>
+</div></footer>
+
+<script>
+  // The Polar checkout link goes here once the shop exists.
+  const BUY_URL = "";
+  document.querySelectorAll("a.buy").forEach(a => {
+    if (BUY_URL) { a.href = BUY_URL; }
+    else if (a.id === "buy") {
+      a.classList.add("disabled");
+      a.textContent = "Buying opens soon";
+      document.getElementById("buy-note").textContent = "You can download the free trial now. Buying opens very soon.";
+    }
+  });
+</script>
+</body>
+</html>
