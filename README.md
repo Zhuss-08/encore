@@ -16,6 +16,7 @@ Encore was called **Lyrics Screensaver** before version 1.9. If you had that, up
 
 - **Now Playing widget** in clear liquid glass, with the song, artist, controls and progress bar.
 - **Enlarged album art** over a soft blur of the album's colours.
+- **Blurred album art background** (optional): the cover fills the screen, softly blurred, with a slider for how much. Covers are widened to fit the screen, so plain areas grow while faces and writing keep their shape. An optional AI fill (a one-time 187 MB download that runs entirely on your Mac) handles the trickiest covers.
 - **Live lyrics** that follow the song line by line. Click a line to jump to it.
 - **Music visualiser** bars that move with what's actually playing.
 - **Music video background** (optional): the song's official video plays behind the album art, in time with the music.
@@ -25,7 +26,7 @@ Encore was called **Lyrics Screensaver** before version 1.9. If you had that, up
 
 - **Now Playing**: album art and moving bars beside the notch. Hover to open full controls, the lyric line, your calendar and audio output.
 - **Incoming calls**: FaceTime and iPhone calls appear in the notch with working **Accept** and **Decline** buttons, instead of macOS's alert.
-- **Weather**: the temperature, the next few hours and the chance of rain, over a moving sky that matches the weather and time of day where you are. Click it to open the Weather app.
+- **Weather**: the temperature, the next few hours and the chance of rain, over a moving sky that matches the weather and time of day where you are, with tonight's real moon, rain that splashes and snow that settles. Click it to open the Weather app.
 - **Volume & brightness** pop-ups that can replace macOS's own.
 - **Battery**: charging alerts and a **Low Battery** card. Tap the battery to turn on Low Power Mode.
 - **Headphones**: a pop-up when your AirPods or headphones connect.
@@ -72,6 +73,7 @@ Encore has no ads or tracking, and you don't need an account to use it. It only 
 - **Weather** from [Open-Meteo](https://open-meteo.com), using your location rounded to about 1 km.
 - **Music videos** from YouTube, if you turn that on.
 - **Video timings**: how far each music video is from its song, shared anonymously so videos line up straight away for everyone.
+- **The AI fill model**, only if you choose to download it, fetched once from Hugging Face. Your covers are never uploaded.
 - **Update checks** on this GitHub page.
 - **Licence checks** with [Polar](https://polar.sh), which sells Encore, when you activate a key and every few days after. Encore never sees your card details.
 
