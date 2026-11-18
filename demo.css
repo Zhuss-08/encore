@@ -1,0 +1,87 @@
+/* The live Encore demo: a small Mac screen running Encore's lock screen. */
+#try { padding-top: 24px; }
+.demo-hint { text-align: center; color: var(--muted); font-size: 14px; margin: 16px 0 0; }
+.demo-hint b { color: var(--text); font-weight: 600; }
+
+.mac { max-width: 960px; margin: 0 auto; }
+.mac-lid { background: #1b1b20; border-radius: 22px; padding: 14px; box-shadow: 0 40px 90px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.08); }
+.mac-base { height: 16px; margin: 0 -4%; background: linear-gradient(#2a2a30, #141418); border-radius: 0 0 18px 18px; box-shadow: 0 18px 40px rgba(0,0,0,0.5); position: relative; }
+.mac-base::after { content: ""; position: absolute; left: 50%; top: 0; width: 18%; height: 6px; transform: translateX(-50%); background: #0d0d10; border-radius: 0 0 8px 8px; }
+.viewport { position: relative; overflow: hidden; border-radius: 10px; background: #000; }
+
+/* The screen is laid out at 1000×625 and scaled to fit. */
+.scr { position: absolute; left: 0; top: 0; width: 1000px; height: 625px; transform-origin: 0 0; overflow: hidden; color: #fff;
+       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; user-select: none; -webkit-user-select: none; }
+.scr * { box-sizing: border-box; }
+.layer { position: absolute; inset: 0; transition: opacity .9s ease; }
+.wallpaper { background: radial-gradient(70% 90% at 20% 10%, #3b4cca, transparent 60%), radial-gradient(80% 80% at 90% 90%, #c2417a, transparent 60%), linear-gradient(160deg, #1b2459, #431c5a 55%, #0f1235); }
+.artbg { background-size: cover; background-position: center; filter: blur(16px) saturate(1.1) brightness(0.92); transform: scale(1.08); }
+.colours { }
+.shade { background: radial-gradient(closest-side, transparent 60%, rgba(0,0,0,0.25)); pointer-events: none; }
+.lyricshade { background: rgba(0,0,0,0.42); pointer-events: none; }
+.catch { position: absolute; inset: 0; cursor: pointer; }
+
+/* Clock */
+.clock { position: absolute; top: 46px; left: 0; right: 0; text-align: center; pointer-events: none; text-shadow: 0 2px 14px rgba(0,0,0,0.25); }
+.clock .date { font-size: 19px; font-weight: 600; opacity: .9; }
+.clock .time { font-size: 96px; font-weight: 700; letter-spacing: -2px; line-height: 1; font-family: "SF Pro Rounded", -apple-system, sans-serif; opacity: .92; }
+
+/* Notch and Dynamic Island */
+.island { position: absolute; top: 0; left: 50%; width: 170px; height: 30px; transform: translateX(-50%); background: #000; border-radius: 0 0 16px 16px;
+          transition: width .45s cubic-bezier(.3,1.3,.5,1), height .45s cubic-bezier(.3,1.3,.5,1), border-radius .45s; z-index: 5; cursor: pointer; overflow: hidden; }
+.island.open { width: 440px; height: 128px; border-radius: 0 0 30px 30px; cursor: default; }
+.island .mini { position: absolute; top: 6px; left: 10px; width: 18px; height: 18px; border-radius: 5px; background-size: cover; transition: opacity .2s; }
+.island .minibars { position: absolute; top: 9px; right: 12px; display: flex; gap: 2px; align-items: flex-end; height: 12px; transition: opacity .2s; }
+.island .minibars i { width: 3px; border-radius: 2px; background: currentColor; height: 4px; transition: height .12s; }
+.island.open .mini, .island.open .minibars { opacity: 0; }
+.island .full { position: absolute; inset: 34px 18px 12px; display: flex; gap: 14px; align-items: center; opacity: 0; transition: opacity .25s; pointer-events: none; }
+.island.open .full { opacity: 1; transition-delay: .15s; pointer-events: auto; }
+.island .full .art { width: 70px; height: 70px; border-radius: 14px; background-size: cover; flex: none; }
+.island .full .info { flex: 1; min-width: 0; }
+.island .full .t { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.island .full .a { font-size: 13px; opacity: .6; }
+.island .full .l { font-size: 13px; margin-top: 4px; opacity: .9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.island .full .ctl { display: flex; gap: 6px; }
+
+/* Side buttons */
+.side { position: absolute; left: 22px; top: 22px; display: flex; flex-direction: column; gap: 10px; z-index: 4; transition: opacity .4s; }
+.side button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.12);
+               backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: #fff; display: grid; place-items: center; cursor: pointer; padding: 0; }
+.side button.on { background: var(--accent, #f43f7a); border-color: transparent; }
+.side button svg, .ctl svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* Album art and the glass controls */
+.art { position: absolute; border-radius: 16px; background-size: cover; background-position: center; box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+       transition: all .7s cubic-bezier(.2,.9,.25,1); cursor: pointer; z-index: 4; }
+.glass { position: absolute; border-radius: 22px; background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.28);
+         backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%);
+         box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 12px 32px rgba(0,0,0,0.25); transition: all .7s cubic-bezier(.2,.9,.25,1); z-index: 3; padding: 12px 16px; }
+.glass .row { display: flex; align-items: center; gap: 10px; }
+.glass .t { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.glass .a { font-size: 12.5px; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar { position: relative; flex: 1; height: 16px; cursor: pointer; }
+.bar::before, .bar .fill { content: ""; position: absolute; left: 0; top: 6px; height: 4px; border-radius: 2px; }
+.bar::before { right: 0; background: rgba(255,255,255,0.28); }
+.bar .fill { background: #fff; }
+.times { font-size: 10.5px; opacity: .65; font-variant-numeric: tabular-nums; width: 30px; }
+.ctl { display: flex; justify-content: center; align-items: center; gap: 22px; }
+.ctl button { background: none; border: 0; color: #fff; cursor: pointer; padding: 4px; display: grid; place-items: center; border-radius: 50%; }
+.ctl button:hover { background: rgba(255,255,255,0.12); }
+.ctl .pp svg { width: 24px; height: 24px; }
+
+/* Lyrics */
+.lyrics { position: absolute; left: 470px; top: 150px; width: 470px; height: 420px; overflow: hidden; z-index: 3; transition: opacity .6s;
+          mask-image: linear-gradient(transparent, #000 18%, #000 78%, transparent); -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 78%, transparent); }
+.lyrics .track { transition: transform .6s cubic-bezier(.2,.9,.25,1); }
+.lyrics p { margin: 0; padding: 9px 0; font-size: 27px; font-weight: 700; line-height: 1.2; letter-spacing: -.3px; opacity: .32; cursor: pointer;
+            transition: opacity .35s, transform .35s; transform-origin: left center; }
+.lyrics p:hover { opacity: .6; }
+.lyrics p.now { opacity: 1; transform: scale(1.04); }
+
+/* Visualiser */
+.viz { position: absolute; left: 0; right: 0; bottom: 0; width: 1000px; height: 120px; z-index: 2; pointer-events: none; transition: opacity .5s; }
+
+@media (max-width: 640px) {
+  .mac-lid { padding: 7px; border-radius: 14px; }
+  .mac-base { height: 10px; }
+}

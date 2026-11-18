@@ -94,12 +94,13 @@
   footer .copy { margin-left: auto; }
   @media (max-width: 640px) { nav .links { display: none; } footer .copy { margin-left: 0; width: 100%; } }
 </style>
+<link rel="stylesheet" href="demo.css">
 </head>
 <body>
 
 <nav><div class="wrap">
   <img src="favicon.png" alt=""><b>Encore</b>
-  <div class="links"><a href="#features">Features</a><a href="#price">Price</a><a href="#install">Install</a><a href="#faq">Questions</a></div>
+  <div class="links"><a href="#try">Try it</a><a href="#features">Features</a><a href="#price">Price</a><a href="#install">Install</a><a href="#faq">Questions</a></div>
 </div></nav>
 
 <header class="hero"><div class="glow"></div><div class="wrap">
@@ -112,6 +113,12 @@
   </div>
   <p class="small">For macOS 14 or later · Works with Spotify and Apple Music · 7 days free</p>
 </div></header>
+
+<section id="try"><div class="wrap">
+  <h2>See it in action</h2>
+  <p class="sub">This is Encore's lock screen, running right here. The songs are made up and it plays silently, but everything works.</p>
+  <div id="demo"></div>
+</div></section>
 
 <section id="features"><div class="wrap">
   <h2>Everything your music deserves</h2>
@@ -197,5 +204,6 @@
     }
   });
 </script>
+<script src="demo.js"></script>
 </body>
 </html>
