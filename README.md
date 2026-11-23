@@ -19,7 +19,11 @@ Encore was called **Lyrics Screensaver** before version 1.9. If you had that, up
 - **Blurred album art background** (optional): the cover fills the screen, softly blurred, with a slider for how much. Covers are widened to fit the screen, so plain areas grow while faces and writing keep their shape. An optional AI fill (a one-time 187 MB download that runs entirely on your Mac) handles the trickiest covers.
 - **Live lyrics** that follow the song line by line. Click a line to jump to it.
 - **Music visualiser** bars that move with what's actually playing.
-- **Music video background** (optional): the song's official video plays behind the album art, in time with the music.
+- **Music video background** (optional): the song's official video plays behind the album art, in time with the music. The visualiser keeps playing over it.
+- **Vinyl mode**: the album art becomes a record spinning on a silver turntable. It winds down when you pause and the tonearm lifts onto its rest; drag the record to scrub through the song.
+- **Pitch fader and 33/45 rpm** in vinyl mode: music videos speed up and slow down like a record; Spotify and Apple Music change key at normal speed (they don't allow other apps to change their speed), with an option to keep voices natural. Your setting is remembered until you change it, and the menu bar shows it with a one-click **Back to Normal**.
+- **Album-coloured clock** (optional): the clock and date take the cover's main colour, or its accent colour when the cover is all white or all black.
+- **Easy to read over white covers**: frosted glass and dark visualiser bars when the background is mostly white.
 - Keeps **Apple's own clock**, in your chosen font and size, so locking and unlocking look seamless.
 
 ## Dynamic Island
@@ -56,7 +60,7 @@ macOS asks before Encore can use each of these. Only allow what you want:
 | Permission | Used for |
 |---|---|
 | Automation (Spotify / Music) | Seeing what's playing and controlling playback |
-| System audio | Making the bars move with the music. Nothing is recorded or saved. |
+| System audio | Making the bars move with the music, and vinyl mode's pitch control. Nothing is recorded or saved. |
 | Accessibility | Taking over the volume and brightness keys, and answering calls from the notch |
 | Calendars | Today's events in the island. Your calendars stay on your Mac. |
 | Location | The weather where you are. You can type a town instead in Settings → Weather. |
@@ -76,6 +80,10 @@ Encore has no ads or tracking, and you don't need an account to use it. It only 
 - **The AI fill model**, only if you choose to download it, fetched once from Hugging Face. Your covers are never uploaded.
 - **Update checks** on this GitHub page.
 - **Licence checks** with [Polar](https://polar.sh), which sells Encore, when you activate a key and every few days after. Encore never sees your card details.
+
+## Open source
+
+Vinyl mode's pitch engine is [Signalsmith Stretch](https://github.com/Signalsmith-Audio/signalsmith-stretch) (MIT licence). Its licence is included in the app.
 
 ## Good to know
 
